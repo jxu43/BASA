@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Comment = require('./comment');
 
 var CourseSchema = new mongoose.Schema({
     courseId: {
