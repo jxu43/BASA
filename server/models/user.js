@@ -2,6 +2,11 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
 var UserSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        unique: true,
+        required: true,
+    },
     email: {
         type: String,
         unique: true,
@@ -25,7 +30,7 @@ var UserSchema = new mongoose.Schema({
         required: true
     },
     courses: [{
-        courseid: String,
+        courseId: String,
         grade: String,
         progress: [{
             checked: Boolean
