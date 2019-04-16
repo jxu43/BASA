@@ -1,8 +1,8 @@
 # BASA
 
-### Project Description: Basa is an education website built specifically for kids (Kindergarten - 12th grade). It provides a platform for educators, students and parents to easily share their previous projects and other educational resources in forms of videos, texts or pictures, and make the resources available to everyone who wants to replicate the mission to learn, no matter where they are.
+**Project Description** Basa is an education website built specifically for kids (Kindergarten - 12th grade). It provides a platform for educators, students and parents to easily share their previous projects and other educational resources in forms of videos, texts or pictures, and make the resources available to everyone who wants to replicate the mission to learn, no matter where they are.
 
-### Goal: We aim to create an inclusive educational platform where the community can share educational resources to help develop the inventors of the future around the world. (focus in K-12 education). We hope to create a global community of creative learners in the process, where everyone can share other educational opportunities, lessons, and learnings.
+**Goal**: We aim to create an inclusive educational platform where the community can share educational resources to help develop the inventors of the future around the world. (focus in K-12 education). We hope to create a global community of creative learners in the process, where everyone can share other educational opportunities, lessons, and learnings.
 
 
 ### General Features:
