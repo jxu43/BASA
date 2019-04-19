@@ -19,6 +19,7 @@
     "demon": "^1.4.4",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
+    "hbs": "^4.0.4",
     "mongoose": "^5.5.1",
     "node": "^11.13.0",
     "nodemon": "^1.18.11",

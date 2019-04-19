@@ -7,10 +7,10 @@ const User = require('../models/User');
 const { needAuth } = require('../config/authenticate');
 
 // Get Login Page
-router.get('/login', needAuth, (req, res) => res.render('login'));
+router.get('/login', needAuth, (req, res) => res.render('login', {layout: 'navbar'}));
 
 // Get Register Page
-router.get('/register', needAuth, (req, res) => res.render('register'));
+router.get('/register', needAuth, (req, res) => res.render('register', {layout: 'navbar'}));
 
 // Register Route
 router.post('/register', (req, res) => {

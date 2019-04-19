@@ -3,7 +3,7 @@ const router = express.Router();
 const { hasAuth, needAuth } = require('../config/authenticate');
 
 // Welcome Page
-router.get('/', needAuth, (req, res) => res.render('welcome'));
+router.get('/', needAuth, (req, res) => res.render('welcome', {layout: 'navbar'}));
 
 // Dashboard
 router.get('/login-home', hasAuth, (req, res) =>

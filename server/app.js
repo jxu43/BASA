@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -6,12 +7,16 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const cors = require('cors');
 
+
 // set up express
 const app = express();
 
 // connect passport.js
 require('./config/passport')(passport);
 
+app.set('views', path.join(__dirname, '../client/views'));
+app.set('view engine', 'hbs');
+app.use(express.static(path.join(__dirname, '../client/public')));
 //------------------------------------Connect to database--------------------------------------------
 const URL = "mongodb+srv://basaAdmin:tmac080510@cluster0-rl9ur.mongodb.net/test?retryWrites=true";
 mongoose.Promise = Promise;
