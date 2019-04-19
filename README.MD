@@ -7,7 +7,7 @@
 
 ### General Features:
 
-* Home Page [Home page](client/views/home.hbs)
+* Home Page [Home page](client/views/welcome.hbs)
 	- Display the general information about the website
 	- Show a list of trending classes
 	- Allow user to navigate to Courses List page.
