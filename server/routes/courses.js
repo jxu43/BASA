@@ -1,0 +1,96 @@
+const express = require('express');
+const router = express.Router();
+// const passport = require('passport');
+const Course = require('../models/Course');
+const Section = require('../models/Section');
+const { needAuth } = require('../config/authenticate');
+
+router.get('/catalog', needAuth, (req, res) => {
+
+    Course.find({}, (err, doc) => {
+        if (err) {
+            console.log("Failed to retrieve courses");
+        }
+        res.send(JSON.stringify(doc));
+        console.log(doc);
+    })
+});
+
+router.post('/:courseId/addSection', needAuth, (req, res) => {
+    console.log(req.body);
+
+    const { courseId, sectionId, videos, description } = req.body;
+
+    let err = [];
+
+    if (!sectionId || !courseId) {
+        err.push({ msg: 'Missing sectionId' });
+    } else{
+        const newSection = new Section({
+            sectionId: sectionId,
+            videos: videos,
+            description: description,
+            comments: []
+        });
+        Course.findOneAndUpdate({courseId: courseId}, {$push: {sections: newSection }} , {new: true}, (err, doc) => {
+            if (err) {
+                console.log("Failed to add sections");
+            }
+            req.flash(
+                'success_msg',
+                'Section is now added'
+            );
+            console.log("successful save to database");
+            console.log(doc);
+            res.redirect('/courses/catalog');
+        });
+    }
+});
+
+router.post('/create', needAuth, (req, res) => {
+    console.log(req.body);
+
+    const { courseId, subject, educatorId } = req.body;
+
+    let err = [];
+
+    if (!courseId || !subject || !educatorId) {
+         err.push({ msg: 'Missing Entries' });
+    }
+
+    if (err.length > 0) {
+         console.log(err);
+         res.render('create', {
+             err,
+         });
+    } else {
+        Course.findOne({courseId: courseId}).then(course => {
+            if (course) {
+                err.push({ msg: 'Course Already Exist' });
+                res.render('create', {
+                    err,
+                });
+            } else {
+                const newCourse = new Course({
+                    courseId: courseId,
+                    subject: subject,
+                    educatorId: educatorId
+                });
+                console.log("new course:", courseId);
+                newCourse
+                    .save()
+                    .then(() => {
+                        req.flash(
+                            'success_msg',
+                            'Course are now created'
+                        );
+                        console.log("successful save to database");
+                        res.redirect('/courses/catalog');
+                    })
+                    .catch(err => console.log(err));
+            }
+        })
+    }
+});
+
+module.exports = router;

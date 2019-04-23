@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Comment = require('./comment');
+var Schema = mongoose.Schema;
 
 var CourseSchema = new mongoose.Schema({
     courseId: {
@@ -11,16 +11,12 @@ var CourseSchema = new mongoose.Schema({
     educatorId: String,
     sections: [
         {
-            sectionId: {type: String},
-            video: {type: Buffer},
-            description: {type: String},
-            comments: [{
-                comment: Comment
-            }]
+            section:{
+                type: Schema.Types.ObjectId,
+                ref: "Section"
+            }
         }]
 })
 
-var Course = mongoose.model("course", CourseSchema)
-module.exports = {
-    Course: Course
-}
+var Course = mongoose.model("Course", CourseSchema);
+module.exports = Course;

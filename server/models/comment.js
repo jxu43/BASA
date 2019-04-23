@@ -6,7 +6,5 @@ var CommentSchema = new mongoose.Schema({
     replies: [this]
 });
 
-var Comment = mongoose.model("comment", CommentSchema);
-module.exports = {
-    Comment: Comment
-}
+var Comment = mongoose.model("Comment", CommentSchema);
+module.exports = Comment;

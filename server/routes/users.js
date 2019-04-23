@@ -16,7 +16,7 @@ router.get('/register', needAuth, (req, res) => res.render('register', {layout: 
 router.post('/register', (req, res) => {
 
     console.log(req.body);
-    const { email, username, password, repeatPassword, role, parentId } = req.body;
+    const { email, username, password, repeatPassword, role, parentId, childId } = req.body;
 
     let err = [];
 
@@ -53,7 +53,7 @@ router.post('/register', (req, res) => {
                                 password: hashedPassword,
                                 role: role,
                                 parent: parentId,
-                                child: [],
+                                child: childId,
                                 courses: []
                             });
                             console.log("registerUser is:",registerUser);
