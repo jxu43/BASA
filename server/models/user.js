@@ -28,9 +28,7 @@ var UserSchema = new mongoose.Schema({
         required: true,
     },
     parent: String,
-    child: [{
-        childId: String
-    }],
+    child: String,
     courses: [{
         courseId: String,
         grade: String,

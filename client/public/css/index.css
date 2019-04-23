@@ -19,48 +19,10 @@ h3 {
     letter-spacing: 3px;
 }
 
-
-.footer {
-    display: flex;
-    flex-direction: column;
-    background-color: #c90f48;
-    color: white;
-}
-
-.footer-information {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding-left: 20%;
-    padding-right: 20%;
-}
-
-.footer-font {
-    color: white;
-}
-
-.footer-icons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.Contact {
-    display: flex;
-    flex-direction: column;
-}
-
-.subscribe {
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-
 /*content*/
 .w3-content {
     margin-top: 80px;
 }
-
 
 
 .carousel-banner-img {

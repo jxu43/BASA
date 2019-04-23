@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up Page</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/signIn.css">
     <link rel="stylesheet" href="/css/w3.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -13,85 +12,10 @@
 </head>
 <body>
 
-<!--content-->
-<div class=" w3-center w3-light-gray" style="width: 100%; height: 110vh">
-    <div class="signIn-info">
-        <h1 style="margin-bottom: 50px; font-weight: bolder">Sign Up</h1>
-
-        <div class="container">
-            <ul class="nav nav-tabs nav-tab" style="font-weight: bold">
-                <li class="active"><a data-toggle="tab" href="#Parent">Parent</a></li>
-                <li><a data-toggle="tab" href="#Kid">Kid</a></li>
-                <li><a data-toggle="tab" href="#Educator">Educator</a></li>
-            </ul>
-
-            <div class="tab-content signUp-tabs">
-                <div id="Parent" class="tab-pane fade in active">
-                    <form method="POST" action="">
-                        <div class="signIn-container">
-                            <input class="signIn-input" type="text" placeholder="  Username" name="username" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input class="signIn-input" type="text" placeholder="  Email" name="email" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input type="password" placeholder="  Password" name="password" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input type="password" placeholder="  Confirm Password" name="repeatPassword" required>
-                        </div>
-                         <input type="hidden" name="role" value="parent" />
-
-                        <button type="submit" class="signIn-btn">Submit</button>
-                        <p>Already have an account? <a href="#" class="w3-hover-text-blue"><span class="w3-text-blue" style="font-weight: bold">Sign In Here</span></a></p>
-                    </form>
-                </div>
-                <div id="Kid" class="tab-pane fade">
-                    <form method="POST" action="">
-                        <div class="signIn-container">
-                            <input class="signIn-input" type="text" placeholder="  Username" name="username" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input class="signIn-input" type="text" placeholder="  Email" name="email" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input class="signIn-input" type="text" placeholder="  Parent's Username" name="parentId" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input type="password" placeholder="  Password" name="password" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input type="password" placeholder="  Confirm Password" name="repeatPassword" required>
-                        </div>
-                        <input type="hidden" name="role" value="kid" />
-                        <button type="submit" class="signIn-btn">Submit</button>
-                        <p>Already have an account? <a href="#" class="w3-hover-text-blue"><span class="w3-text-blue" style="font-weight: bold">Sign In Here</span></a></p>
-                    </form>
-                </div>
-                <div id="Educator" class="tab-pane fade">
-                    <form method="POST" action="">
-                        <div class="signIn-container">
-                            <input class="signIn-input" type="text" placeholder="  Username" name="username" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input class="signIn-input" type="text" placeholder="  Email" name="email" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input type="password" placeholder="  Password" name="password" required>
-                        </div>
-                        <div class="signIn-container">
-                            <input type="password" placeholder="  Confirm Password" name="repeatPassword" required>
-                        </div>
-                        <input type="hidden" name="role" value="educator" />
-                        <button type="submit" class="signIn-btn">Submit</button>
-                        <p>Already have an account? <a href="/users/login" class="w3-hover-text-blue"><span class="w3-text-blue" style="font-weight: bold">Sign In Here</span></a></p>
-                    </form>
-                </div>
-            </div>
-        </div>
-
+    <!--content-->
+    <div class="w3-content" style="max-width: 100%">
+       
     </div>
-</div>
 
 </body>
 </html>

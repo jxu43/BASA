@@ -54,6 +54,7 @@ app.use(flash());
 // All Routes go below here
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
+app.use('/courses', require('./routes/courses.js'));
 
 // return message setup
 app.use(function(req, res, next) {
