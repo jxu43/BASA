@@ -4,6 +4,9 @@
 }
 
 .padding-large {
-	padding: 80px;
+	margin: 50px;
 }
 
+.home-img {
+	flex: 1
+}
