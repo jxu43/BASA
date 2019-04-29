@@ -6,10 +6,10 @@ const User = require('../models/User');
 const { needAuth } = require('../config/authenticate');
 
 // Get Login Page
-router.get('/login', needAuth, (req, res) => res.render('login', {layout: 'navbar'}));
+router.get('/login', needAuth, (req, res) => res.render('login', {layout: 'navbar', user: true}));
 
 // Get Register Page
-router.get('/register', needAuth, (req, res) => res.render('register', {layout: 'navbar'}));
+router.get('/register', needAuth, (req, res) => res.render('register', {layout: 'navbar', user: true}));
 
 // Register Route
 router.post('/register', (req, res) => {
@@ -46,7 +46,7 @@ router.post('/register', (req, res) => {
         User.register(registerUser, password, function(err, user){
             if(err){
                 console.log(err)
-                res.render('register', {layout: 'navbar', message: 'Your registration information is not valid'})
+                res.render('register', {layout: 'navbar', user: true, message: 'Your registration information is not valid'})
             } else{
                 console.log(user)
                 passport.authenticate('local')(req, res, function(){
@@ -68,7 +68,7 @@ router.post('/login', (req, res, next) => {
                     res.redirect('/');
                 });
             } else{
-                res.render('login',  {layout: 'navbar', message:'Your email or password is incorrect.'})
+                res.render('login',  {layout: 'navbar', user: true, message:'Your email or password is incorrect.'})
             }
         })(req, res, next);
 });

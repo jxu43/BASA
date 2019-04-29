@@ -15,6 +15,8 @@ router.get('/catalog', hasAuth, (req, res) => {
     })
 });
 
+
+
 router.post('/:courseId/addSection', needAuth, (req, res) => {
     console.log(req.body);
 

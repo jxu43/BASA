@@ -9,7 +9,7 @@ module.exports = {
     needAuth: function(req, res, next) {
         if (!req.isAuthenticated()) {
             return next();
-        }
-        res.render('welcome', {layout: 'navbar', flag: false})
+        } 
+        res.redirect('/')
     }
 };

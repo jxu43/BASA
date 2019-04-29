@@ -5,9 +5,9 @@ const { hasAuth, needAuth } = require('../config/authenticate');
 // Welcome Page
 router.get('/', (req, res) => {
 	if (req.user) {
-		res.render('welcome', {layout: 'navbar', user: req.user, flag: false})
+		res.render('welcome', {layout: 'navbar', user: false, username: req.user.username})
 	} else {
-		res.render('welcome', {layout: 'navbar', flag: true })
+		res.render('welcome', {layout: 'navbar', user: true})
 	}
 });
 
