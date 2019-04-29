@@ -64,7 +64,7 @@ router.get('/create', hasPermission, (req, res) => {
 router.post('/create', hasAuth, (req, res) => {
     console.log(req.body);
 
-    const { courseId, courseName, age, subject} = req.body;
+    const { courseId, courseName, age, description, subject} = req.body;
 
     let err = [];
 
@@ -90,6 +90,7 @@ router.post('/create', hasAuth, (req, res) => {
                     courseName: courseName,
                     age: age,
                     subject: subject,
+                    description: req.body.description,
                     educatorId: req.user.userId
                 });
                 console.log("new course:", newCourse);

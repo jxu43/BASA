@@ -7,10 +7,23 @@ var CourseSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
-    courseName: String,
-    subject: String,
-    age: String,
-    educatorId: String,
+    courseName: {
+        type: String,
+        required: true,
+    },
+    subject: {
+        type: String,
+        required: true,
+    },
+    age: {
+        type: String,
+        required: true,
+    },
+    educatorId: {
+        type: String,
+        required: true,
+    },
+    description: String,
     sections: [
         {
             section:{
