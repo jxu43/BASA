@@ -18,42 +18,43 @@
                 <div class="form-group col-xs-12 col-sm-12 col-md-4">
                     <input type="text" class="search form-control" placeholder="Search" />
                 </div>
-                <div class="form-group col-xs-12 col-sm-12 col-md-4">
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 js-filter-group age-btn">
                     <div class="radio-inline">
                         <label>
-                            <input class="filter-all" type="radio" value="all" name="age" id="age-all" checked /> All
+                            <input class="filter-all is-checked" type="button" value="all" name="age" id="age-all" />
                         </label>
                     </div>
                     <div class="radio-inline">
                         <label>
-                            <input class="filter" type="radio" value="8-12" name="age" id="age-1" /> 8-12
+                            <input class="filter" type="button" value="8-12" name="age" id="age-1"/>
                         </label>
                     </div>
                     <div class="radio-inline">
                         <label>
-                            <input class="filter" type="radio" value="12-16" name="age" id="age-2" /> 12-16
+                            <input class="filter" type="button" value="12-16" name="age" id="age-2"/>
                         </label>
                     </div>
                 </div>
-                <div class="form-group col-xs-12 col-sm-12 col-md-4">
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 js-filter-group subject-btn">
                     <div class="radio-inline">
                         <label>
-                            <input class="filter" type="radio" value="all" name="subject" id="subjact-all" checked /> All
+                            <input class="filter-all is-checked" type="button" value="all" name="subject" id="subject-all" />
                         </label>
                     </div>
                     <div class="radio-inline">
                         <label>
-                            <input class="filter" type="radio" value="afterschool" name="subject" id="subject-afterschool" /> After School Program
+                            <input class="filter" type="button" value="afterschool" name="subject" id="subject-afterschool" />
                         </label>
                     </div>
                     <div class="radio-inline">
                         <label>
-                            <input class="filter" type="radio" value="summer" name="subject" id="subject-summer" /> Summer Program
+                            <input class="filter" type="button" value="summer" name="subject" id="subject-summer"/>
                         </label>
                     </div>
+
                     <div class="radio-inline">
                         <label>
-                            <input class="filter" type="radio" value="online" name="subject" id="subject-online" /> Online Program
+                            <input class="filter" type="button" value="online" name="subject" id="subject-online" />
                         </label>
                     </div>
                 </div>
@@ -61,6 +62,12 @@
                     <button class="btn btn-danger" onclick="resetList();">Clear</button>
                 </div>
             </div>
+
+
+
+
+
+
             <ul class="list">
                 {{#each doc}}
                 <li class="list--list-item" data-age='{{this.age}}'>
