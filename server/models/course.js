@@ -2,11 +2,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CourseSchema = new mongoose.Schema({
+    courseName: String,
     courseId: {
         type: String,
         unique: true,
         required: true,
     },
+    courseName: String,
     subject: String,
     educatorId: String,
     sections: [

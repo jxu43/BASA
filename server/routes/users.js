@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
 const User = require('../models/User');
@@ -34,56 +33,44 @@ router.post('/register', (req, res) => {
             err,
         });
     } else {
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(password, salt, (err, hash) => {
-                if (err) throw err;
-                    const hashedPassword = hash;
-                    const userId = username+hashedPassword;
-                User.findOne({ userId: userId}).then(user => {
-                        if (user) {
-                            err.push({ msg: 'Already Register' });
-                            res.render('register', {
-                                err,
-                            });
-                        } else {
-                            const registerUser = new User({
-                                userId: userId,
+        const registerUser = new User({
+                                userId: username+password,
                                 email: email,
                                 username: username,
-                                password: hashedPassword,
+                                password: password,
                                 role: role,
                                 parent: parentId,
                                 child: childId,
                                 courses: []
                             });
-                            console.log("registerUser is:",registerUser);
-                            registerUser
-                                .save()
-                                .then(() => {
-                                    req.flash(
-                                        'success_msg',
-                                        'You are now registered and can log in'
-                                    );
-                                    console.log("successful save to database");
-                                    res.redirect('/users/login');
-                                })
-                                .catch(err => console.log(err));
-                        }
-                    }
-                )
-            });
-        });
+        User.register(registerUser, password, function(err, user){
+            if(err){
+                console.log(err)
+                res.render('register', {layout: 'navbar', message: 'Your registration information is not valid'})
+            } else{
+                console.log(user)
+                passport.authenticate('local')(req, res, function(){
+                    console.log("LoggedIn as: ", user.username);
+                    res.redirect('/');
+                });
+            }
+        })
     }
 });
 
 // Login
 router.post('/login', (req, res, next) => {
     console.log("start login auth");
-    passport.authenticate('local', {
-        successRedirect: '/login-home',
-        failureRedirect: '/users/login',
-        failureFlash: true
-    })(req, res, next);
+    passport.authenticate('local', function(err, user){
+            if(user){
+                req.logIn(user, function(error){
+                    console.log("LoggedIn as: ", user.username);
+                    res.redirect('/');
+                });
+            } else{
+                res.render('login',  {layout: 'navbar', message:'Your email or password is incorrect.'})
+            }
+        })(req, res, next);
 });
 
 // Logout

@@ -3,16 +3,15 @@ const router = express.Router();
 // const passport = require('passport');
 const Course = require('../models/Course');
 const Section = require('../models/Section');
-const { needAuth } = require('../config/authenticate');
+const { needAuth, hasAuth} = require('../config/authenticate');
 
-router.get('/catalog', needAuth, (req, res) => {
+router.get('/catalog', hasAuth, (req, res) => {
 
     Course.find({}, (err, doc) => {
         if (err) {
             console.log("Failed to retrieve courses");
         }
-        res.send(JSON.stringify(doc));
-        console.log(doc);
+        res.render('catalog', {doc: doc});
     })
 });
 
@@ -47,14 +46,19 @@ router.post('/:courseId/addSection', needAuth, (req, res) => {
     }
 });
 
-router.post('/create', needAuth, (req, res) => {
+
+router.get('/create', hasAuth, (req, res) => {
+    res.render('create')
+})
+
+router.post('/create', hasAuth, (req, res) => {
     console.log(req.body);
 
-    const { courseId, subject, educatorId } = req.body;
+    const { courseId, courseName, subject} = req.body;
 
     let err = [];
 
-    if (!courseId || !subject || !educatorId) {
+    if (!courseId || !courseName || !subject) {
          err.push({ msg: 'Missing Entries' });
     }
 
@@ -73,10 +77,11 @@ router.post('/create', needAuth, (req, res) => {
             } else {
                 const newCourse = new Course({
                     courseId: courseId,
+                    courseName: courseName,
                     subject: subject,
-                    educatorId: educatorId
+                    educatorId: req.user.userId
                 });
-                console.log("new course:", courseId);
+                console.log("new course:", newCourse);
                 newCourse
                     .save()
                     .then(() => {
