@@ -11,7 +11,7 @@ router.get('/catalog', hasAuth, (req, res) => {
         if (err) {
             console.log("Failed to retrieve courses");
         }
-        res.render('catalog', {doc: doc});
+        res.render('catalog', {layout: 'navbar', user: false, username: req.user.username, doc: doc});
     })
 });
 
@@ -56,11 +56,11 @@ router.get('/create', hasAuth, (req, res) => {
 router.post('/create', hasAuth, (req, res) => {
     console.log(req.body);
 
-    const { courseId, courseName, subject} = req.body;
+    const { courseId, courseName, age, subject} = req.body;
 
     let err = [];
 
-    if (!courseId || !courseName || !subject) {
+    if (!courseId || !courseName || !age || !subject) {
          err.push({ msg: 'Missing Entries' });
     }
 
@@ -80,6 +80,7 @@ router.post('/create', hasAuth, (req, res) => {
                 const newCourse = new Course({
                     courseId: courseId,
                     courseName: courseName,
+                    age: age,
                     subject: subject,
                     educatorId: req.user.userId
                 });

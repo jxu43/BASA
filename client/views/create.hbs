@@ -23,9 +23,17 @@
             <div class="signIn-container">
                 <input type="text" name="courseName" required>
             </div>
-            <div class="signIn-container">
-                <input type="text" name="subject" required>
-            </div>
+            <fieldset id="group1">
+                <input type="radio" value="afterschool" name="subject"> After School Program
+                <input type="radio" value="summer" name="subject"> Summer Program
+                <input type="radio" value="online" name="subject"> Online Program
+            </fieldset>
+
+            <fieldset id="group2">
+                <input type="radio" value="all" name="age"> All
+                <input type="radio" value="8-12" name="age"> 8 - 12
+                <input type="radio" value="12-16" name="age"> 12 - 16
+            </fieldset>
 
             <button type="submit" class="signIn-btn">Submit</button>
         </form>
