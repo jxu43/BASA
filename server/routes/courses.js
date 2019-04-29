@@ -3,7 +3,7 @@ const router = express.Router();
 // const passport = require('passport');
 const Course = require('../models/Course');
 const Section = require('../models/Section');
-const { needAuth, hasAuth} = require('../config/authenticate');
+const { needAuth, hasAuth, hasPermission} = require('../config/authenticate');
 
 router.get('/catalog', hasAuth, (req, res) => {
 
@@ -11,7 +11,11 @@ router.get('/catalog', hasAuth, (req, res) => {
         if (err) {
             console.log("Failed to retrieve courses");
         }
-        res.render('catalog', {layout: 'navbar', user: false, username: req.user.username, doc: doc});
+        var educator = false;
+        if (req.user.role == "educator") {
+            educator = true;
+        }
+        res.render('catalog', {layout: 'navbar', user: false, educator: educator, username: req.user.username, doc: doc});
     })
 });
 
@@ -49,8 +53,12 @@ router.post('/:courseId/addSection', needAuth, (req, res) => {
 });
 
 
-router.get('/create', hasAuth, (req, res) => {
-    res.render('create')
+router.get('/create', hasPermission, (req, res) => {
+    var educator = false;
+        if (req.user.role == "educator") {
+            educator = true;
+    }
+    res.render('create', {layout: 'navbar', user: false, username: req.user.username, educator: educator})
 })
 
 router.post('/create', hasAuth, (req, res) => {

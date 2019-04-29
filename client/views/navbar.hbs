@@ -4,11 +4,56 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/w3.css">
+    <llink rel="stylesheet" href="/css/nav.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/footer.js"></script>
+    <style type="text/css">
+        .dropbtn {
+          background-color: #c90f48;
+          color: white;
+          padding: 16px;
+          font-size: 16px;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+
+        .dropbtn:hover, .dropbtn:focus {
+          background-color: #2196F3;
+        }
+
+        .dropdown {
+          padding-right: 15px;
+          position: relative;
+          display: inline-block;
+        }
+
+        .dropdown-content {
+          display: none;
+          position: fixed;
+          right: 15px;
+          background-color: #f1f1f1;
+          min-width: 160px;
+          overflow: auto;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+
+        .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+
+        .dropdown a:hover {background-color: #ddd;}
+
+        .show {display: block;}
+    </style>
 </head>
+
 <body>
     <div class="w3-top">
         <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
@@ -20,15 +65,23 @@
                 <a href="#" class="w3-bar-item w3-button">About</a>
                 <a href="#" class="w3-bar-item w3-button">Contact</a>
             </div>
-            <!-- Right-sided navbar links. Hide them on small screens -->
             {{#if user}}
             <div class="w3-right w3-hide-small navigation" style="color: #c90f48;">
                 <a href="/users/register" class="w3-bar-item w3-button">Join US!</a>
                 <a href="/users/login" class="w3-bar-item w3-button">Sign in</a>
             </div>
             {{else}}
-            <div class="w3-right w3-hide-small navigation" style="color: #c90f48;">
-                <a href="" class="w3-bar-item w3-button">Welcome! {{username}}</a>
+            <div class="w3-right navigation">
+                <div class="dropdown">
+                  <button onmouseover="myFunction()" class="dropbtn">{{username}}&nbsp;&nbsp;<i class="fa fa-caret-down"></i></button>
+                  <div id="myDropdown" class="dropdown-content">
+                    <a href="/users/profile">Profile</a>
+                    {{#if educator}}
+                    <a href="/courses/create">Manage Courses</a>
+                    {{/if}}
+                    <a href="/users/logout">Logout</a>
+                  </div>
+                </div>
             </div>
             {{/if}}
         </div>
@@ -74,5 +127,7 @@
         </div>
         <p class="w3-center" style="font-size: 50%;">Copyright@2019BASA</p>
     </footer>
+
+<script type="text/javascript" src = "/js/nav.js"></script>
 </body>
 </html>

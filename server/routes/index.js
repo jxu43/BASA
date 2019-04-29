@@ -5,7 +5,11 @@ const { hasAuth, needAuth } = require('../config/authenticate');
 // Welcome Page
 router.get('/', (req, res) => {
 	if (req.user) {
-		res.render('welcome', {layout: 'navbar', user: false, username: req.user.username})
+		var educator = false;
+	        if (req.user.role == "educator") {
+	            educator = true;
+    	}
+		res.render('welcome', {layout: 'navbar', user: false, username: req.user.username, educator: educator})
 	} else {
 		res.render('welcome', {layout: 'navbar', user: true})
 	}
