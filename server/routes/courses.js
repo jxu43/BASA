@@ -3,10 +3,10 @@ const router = express.Router();
 // const passport = require('passport');
 const Course = require('../models/Course');
 const Section = require('../models/Section');
+const Comment = require('../models/Comment');
 const { needAuth, hasAuth, hasPermission} = require('../config/authenticate');
 
 router.get('/catalog', hasAuth, (req, res) => {
-
     Course.find({}, (err, doc) => {
         if (err) {
             console.log("Failed to retrieve courses");
@@ -19,9 +19,115 @@ router.get('/catalog', hasAuth, (req, res) => {
     })
 });
 
+router.get('/:courseId', (req, res) => {
+    const { courseId } = req.body;
+    Course.find({ courseId: courseId })
+        .select('sections')
+        .exec(function(err, doc) {
+        if (err) {
+            console.log("Failed to retrieve sections");
+        }
+        console.log("get all sections:", doc);
+        res.render('catalog', {layout: 'navbar', doc: doc.sections});
+    })
+});
 
 
-router.post('/:courseId/addSection', needAuth, (req, res) => {
+router.get('/:courseId/:sectionId', (req, res) => {
+    const { courseId, sectionId } = req.body;
+    Section.findOne({ sectionId: sectionId, courseId: courseId })
+        .exec(function (err, doc) {
+            if (err) {
+                console.log("Failed to retrieve sections");
+            }
+            console.log("get section:", doc);
+            res.render('catalog', {layout: 'navbar', doc: doc});
+        })
+});
+
+
+router.get('/:courseId/:sectionId/:commentId', (req, res) => {
+    const { courseId, sectionId, commentId } = req.body;
+    Comment.findOne({ sectionId: sectionId, courseId: courseId, commentId: commentId })
+        .exec(function (err, doc) {
+            if (err) {
+                console.log("Failed to retrieve comments");
+            }
+            console.log("get comment:", doc);
+            res.render('catalog', {layout: 'navbar', doc: doc});
+        })
+});
+
+router.post('/:courseId/:sectionId/addComment', (req, res) => {
+    const { courseId, sectionId, commentId, time, content } = req.body;
+
+    if (!sectionId || !courseId || !commentId || !content) {
+        err.push({ msg: 'Missing entries' });
+    } else{
+        const newComment = new Comment({
+            courseId: courseId,
+            sectionId: sectionId,
+            commentId: commentId,
+            content: content,
+            time: time,
+            replies: []
+        });
+
+        newComment.save(function (err) {
+            if (err) return handleError(err);
+        });
+
+        Section.findOneAndUpdate({courseId: courseId, sectionId: sectionId}, {$push: {comments: newComment }} , {new: true}, (err, doc) => {
+            if (err) {
+                console.log("Failed to add comment");
+            }
+            req.flash(
+                'success_msg',
+                'Comment is now added'
+            );
+            console.log("successful save to database");
+            console.log(doc);
+            res.redirect('/:courseId/:sectionId');
+        });
+    }
+});
+
+router.post('/:courseId/:sectionId/:commentId/addReply', (req, res) => {
+    const { courseId, sectionId, original_id, reply_id, time, content } = req.body;
+
+    if (!sectionId || !courseId || !original_id || !reply_id || !content) {
+        err.push({ msg: 'Missing entries' });
+    } else{
+        const newComment = new Comment({
+            courseId: courseId,
+            sectionId: sectionId,
+            commentId: reply_id,
+            content: content,
+            time: time,
+            replies: []
+        });
+
+        newComment.save(function (err) {
+            if (err) return handleError(err);
+        });
+
+        Comment.findOneAndUpdate({courseId: courseId, sectionId: sectionId, commentId: original_id}, {$push: {replies: newComment }} , {new: true}, (err, doc) => {
+            if (err) {
+                console.log("Failed to add reply");
+            }
+            req.flash(
+                'success_msg',
+                'reply is now added'
+            );
+            console.log("successful save to database");
+            console.log(doc);
+            res.redirect('/:courseId/:sectionId');
+        });
+    }
+});
+
+
+router.post('/:courseId/addSection', (req, res) => {
     console.log(req.body);
 
     const { courseId, sectionId, videos, description } = req.body;
@@ -32,10 +138,15 @@ router.post('/:courseId/addSection', needAuth, (req, res) => {
         err.push({ msg: 'Missing sectionId' });
     } else{
         const newSection = new Section({
+            courseId: courseId,
             sectionId: sectionId,
             videos: videos,
             description: description,
             comments: []
+        });
+
+        newSection.save(function (err) {
+            if (err) return handleError(err);
         });
         Course.findOneAndUpdate({courseId: courseId}, {$push: {sections: newSection }} , {new: true}, (err, doc) => {
             if (err) {
@@ -60,6 +171,7 @@ router.get('/create', hasPermission, (req, res) => {
     }
     res.render('create', {layout: 'navbar', user: false, username: req.user.username, educator: educator})
 })
+
 
 router.post('/create', hasAuth, (req, res) => {
     console.log(req.body);

@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var SectionSchema = new mongoose.Schema({
+    courseId: {type: String},
     sectionId: {type: String},
     videos: [{
         video: Buffer
