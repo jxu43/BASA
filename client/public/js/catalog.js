@@ -29,9 +29,9 @@ $(':input[type=button]').on('click', function(e) {
 			if (!($('.age-btn .filter').hasClass("is-checked")) && !($('.subject-btn .filter').hasClass("is-checked"))) {
 				console.log("no class");
 				$(".filter-all").addClass("is-checked");
-			} else if (!$('.age-btn .filter').hasClass("is-checked")) {
+			} else if (!$('.subject-btn .filter').hasClass("is-checked")) {
 				$(".subject-btn .filter-all").addClass("is-checked");
-			} else {
+			} else if (!$('.age-btn .filter').hasClass("is-checked")){
 				$(".age-btn .filter-all").addClass("is-checked");
 			}
 		} else {
