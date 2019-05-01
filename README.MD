@@ -26,4 +26,8 @@
 
 
 
+wapiti -u https://basa-1.herokuapp.com/ -v 1
+
+
+
 

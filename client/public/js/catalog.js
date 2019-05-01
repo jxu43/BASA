@@ -29,9 +29,12 @@ $(':input[type=button]').on('click', function(e) {
 			if (!($('.age-btn .filter').hasClass("is-checked")) && !($('.subject-btn .filter').hasClass("is-checked"))) {
 				console.log("no class");
 				$(".filter-all").addClass("is-checked");
+			} else if (!$('.age-btn .filter').hasClass("is-checked")) {
+				$(".subject-btn .filter-all").addClass("is-checked");
+			} else {
+				$(".age-btn .filter-all").addClass("is-checked");
 			}
 		} else {
-			console.log("add");
 			$button.addClass("is-checked")
 			if (!($button.is(".filter-all")) && $(".subject-btn .filter-all").hasClass("is-checked") && $(".age-btn .filter-all").hasClass("is-checked")) {
 				if ($(".subject-btn .filter").hasClass("is-checked") && $(".age-btn .filter").hasClass("is-checked")) {
