@@ -22,7 +22,7 @@ router.get('/catalog', hasAuth, (req, res) => {
 router.get('/:courseId', (req, res) => {
     const { courseId } = req.body;
     Course.find({ courseId: courseId })
-        .select('sections')
+        .populate('sections')
         .exec(function(err, doc) {
         if (err) {
             console.log("Failed to retrieve sections");
@@ -36,6 +36,7 @@ router.get('/:courseId', (req, res) => {
 router.get('/:courseId/:sectionId', (req, res) => {
     const { courseId, sectionId } = req.body;
     Section.findOne({ sectionId: sectionId, courseId: courseId })
+        .populate('comments')
         .exec(function (err, doc) {
             if (err) {
                 console.log("Failed to retrieve sections");
@@ -44,7 +45,6 @@ router.get('/:courseId/:sectionId', (req, res) => {
             res.render('catalog', {layout: 'navbar', doc: doc});
         })
 });
-
 
 router.get('/:courseId/:sectionId/:commentId', (req, res) => {
     const { courseId, sectionId, commentId } = req.body;
@@ -85,8 +85,10 @@ router.post('/:courseId/:sectionId/addComment', (req, res) => {
                 'success_msg',
                 'Comment is now added'
             );
+            //console.log("new comment is", newComment);
             console.log("successful save to database");
             console.log(doc);
+
             res.redirect('/:courseId/:sectionId');
         });
     }
@@ -105,10 +107,6 @@ router.post('/:courseId/:sectionId/:commentId/addReply', (req, res) => {
             content: content,
             time: time,
             replies: []
-        });
-
-        newComment.save(function (err) {
-            if (err) return handleError(err);
         });
 
         Comment.findOneAndUpdate({courseId: courseId, sectionId: sectionId, commentId: original_id}, {$push: {replies: newComment }} , {new: true}, (err, doc) => {

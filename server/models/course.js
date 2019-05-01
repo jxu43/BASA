@@ -26,11 +26,10 @@ var CourseSchema = new mongoose.Schema({
     description: String,
     sections: [
         {
-            section:{
-                type: Schema.Types.ObjectId,
-                ref: "Section"
-            }
-        }]
+            type: Schema.Types.ObjectId,
+            ref: "Section"
+        }
+    ]
 })
 
 var Course = mongoose.model("Course", CourseSchema);

@@ -8,12 +8,12 @@ var SectionSchema = new mongoose.Schema({
         video: Buffer
     }],
     description: {type: String},
-    comments: [{
-        comment: {
+    comments: [
+        {
             type: Schema.Types.ObjectId,
             ref: "Comment"
         }
-    }]
+    ]
 });
 
 var Section = mongoose.model("Section", SectionSchema);
