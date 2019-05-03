@@ -27,6 +27,12 @@ h3 {
     color: white;
 }
 
+
+.footer-fixed {
+    display: fixed !important;
+    bottom: 0;
+}
+
 .footer-information {
     display: flex;
     flex-direction: row;

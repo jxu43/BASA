@@ -104,7 +104,7 @@ router.get('/:courseId', hasAuth, (req, res) => {
 
 
 router.get('/:courseId/addSection', hasAuth, (req, res) => {
-    res.render('addSection', {layout: 'navbar', user: false, username: req.user.username })
+    res.render('addSection', {layout: 'navbar', user: false, username: req.user.username, courseId: req.params.courseId})
 })
 
 
@@ -173,6 +173,7 @@ router.get('/:courseId/:sectionId/:commentId', (req, res) => {
             res.render('catalog', {layout: 'navbar', doc: doc});
         })
 });
+
 
 router.post('/:courseId/:sectionId/addComment', (req, res) => {
     const { courseId, sectionId, commentId, time, content } = req.body;
