@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Main Page</title>
+    <title>Create Class Page</title>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/w3.css">
     <link rel="stylesheet" href="/css/flex.css">
+    <link rel="stylesheet" href="/css/signIn.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -13,28 +14,37 @@
 
 </head>
 <body>
-<div class=" w3-center w3-light-gray" style="width: 100%; height: 100vh">
+<div class=" w3-center w3-light-gray" style="width: 100%; height: 100%">
     <div class="signIn-info">
         <h1 style="margin-bottom: 50px; font-weight: bolder">Create Class</h1>
         <form method="POST" action="">
             <div class="signIn-container">
-                <input class="signIn-input" type="text" name="courseId" required>
+                <input class="signIn-input" type="text" name="courseId" placeholder=" Please Enter Your Course ID" required>
             </div>
             <div class="signIn-container">
-                <input type="text" name="courseName" required>
+                <input type="text" name="courseName" placeholder=" Please Enter Your Course Name" required>
             </div>
+
             <fieldset id="group1">
-                <input type="radio" value="afterschool" name="subject"> After School Program
-                <input type="radio" value="summer" name="subject"> Summer Program
-                <input type="radio" value="online" name="subject"> Online Program
+                <div class="program-group1" style="margin-bottom: 5px">
+                    <div class="program-group"><input type="radio" value="afterschool" name="subject"> After School Program</div>
+                    <div class="program-group"><input type="radio" value="summer" name="subject"> Summer Program</div>
+                    <div class="program-group"><input type="radio" value="online" name="subject"> Online Program</div>
+                </div>
             </fieldset>
 
+
             <fieldset id="group2">
-                <input type="radio" value="all" name="age"> All
-                <input type="radio" value="8-12" name="age"> 8 - 12
-                <input type="radio" value="12-16" name="age"> 12 - 16
+                <div class="program-group2">
+                    <div class="program-group"><input type="radio" value="all" name="age"> All</div>
+                    <div class="program-group"><input type="radio" value="8-12" name="age"> 8 - 12</div>
+                    <div class="program-group"><input type="radio" value="12-16" name="age"> 12 - 16</div>
+                </div>
             </fieldset>
-            <textarea name="description"></textarea>
+            <div>
+                <textarea name="description" class="create-desc" placeholder=" Description of This course"></textarea>
+            </div>
+
             <button type="submit" class="signIn-btn">Submit</button>
         </form>
 

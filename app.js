@@ -31,8 +31,11 @@ db.once('open', function () {
 
 //------------------------------------Server Configuration--------------------------------------------
 //app.use(express.static(__dirname));
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+
 app.use(cors({origin: true}));
 
 // Session set up
@@ -65,7 +68,7 @@ app.use(function(req, res, next) {
 });
 
 // listen on port 3000
-app.listen(process.env.PORT || 8080, function () {
+app.listen(8080, function () {
     console.log('BASA listening on port 8080');
 });
 

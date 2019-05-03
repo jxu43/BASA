@@ -15,6 +15,10 @@ router.get('/', (req, res) => {
 	}
 });
 
+router.get('/about', (req, res) => {
+	res.render('about', {layout: 'navbar'})
+});
+
 // Dashboard
 // router.get('/login-home', hasAuth, (req, res) =>
 //     res.render('welcome', {

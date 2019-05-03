@@ -3,6 +3,8 @@
   margin-bottom: 30px;
 }
 
+
+
 .list {
   list-style-type: none;
   padding: 0;
@@ -24,5 +26,106 @@
 }
 
 .is-checked {
-  background-color: red;
+  border-radius: 3rem;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: rgb(26, 190, 229);
+  color: white;
+  /*box-shadow: inset 0 3px 5px 0 rgba(0,0,0, 0.2);*/
+  outline: 0;
+  opacity: 0.6;
 }
+
+/*catalog*/
+
+.search-cata {
+  border-radius: 8px;
+}
+
+.course-cata {
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+}
+
+.form-group {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.catalog-all {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+ /*style of catalog*/
+
+.cata-type {
+  border-radius: 3rem;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: rgb(26, 190, 229);
+  color: white;
+  outline: 0;
+}
+
+/*clear btn*/
+
+.btn-clear {
+  background-color: #c90f48;
+  color: white;
+  border: none;
+  outline: 0;
+  border-radius: 8px;
+}
+
+.btn-clear:hover {
+  background-color: #c90f48;
+  color: white;
+  border: none;
+}
+
+.btn-clear:visited {
+  background-color: #c90f48;
+  color: white;
+  border: none;
+  outline: 0;
+}
+
+.btn-clear:active {
+  background-color: #c90f48;
+  color: white;
+  border: none;
+}
+
+.btn-clear:focus {
+  background-color: #c90f48;
+  color: white;
+  outline: 0;
+}
+
+/*course*/
+.course {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /*height: 360px;*/
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: space-between;
+}
+
+.course-1 {
+  width: 300px;
+  height: 360px;
+  background-color: rgb(26, 190, 229);
+  margin: 20px;
+  color: white;
+}
+
+.course-pic {
+  width: 100%;
+}
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Page</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/signIn.css">
+    <link rel="stylesheet" href="/css/w3.css">
+    <link rel="stylesheet" href="/css/course.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/footer.js"></script>
+</head>
+<body>
+
+<div class=" w3-center" style="width: 100%; height: 100%">
+    <div class="title" style="width: 100%; margin-top: 83px">
+        <div class="text-title">
+            <h1>{{course.courseName}}</h1>
+            <p style="font-size: 1.5rem; font-weight: bold"> <i>{{course.description}}</i></p>
+            <span style="font-weight: bold">Instructor </span><span>{{course.educatorId}}</span>
+            <div class="tag"></div>
+        </div>
+    </div>
+
+    <div>
+        <img class="video" src="/img/rocketscience.png" style="width: 60%">
+    </div>
+
+    <div style="width: 100%; height: 40px; background-color: rgb(26, 190, 229); margin-top: 40px; margin-bottom: 60px"></div>
+
+    <div style="width: 320px; margin-left: auto; margin-right: auto; margin-bottom: 60px">
+        <h3>Sections</h3>
+        <!-- <p style="font-size: 15px; font-weight: bolder; margin-left: -160px">Getting Started!</p> -->
+        <ul type="circle" class="section-course">
+            {{#each course.sections}}
+                <a href="{{../course.courseId}}/{{this.sectionId}}"><li>{{this.sectionId}}</li></a>
+            {{/each}}
+
+        </ul>
+
+        {{#if educator}}
+        <a href="{{course.courseId}}/addSection"><button type="submit" class="signIn-btn">Add Section</button></a>
+        {{/if}}
+    </div>
+</div>
+</body>
+</html>

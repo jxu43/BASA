@@ -2,6 +2,7 @@
 .signIn-info {
     padding-top: 150px;
     color: #39464e;
+    margin-bottom: 150px;
 }
 
 .signIn-container {
@@ -13,6 +14,7 @@
     width: 495px;
     height: 48px;
     border: 2px solid #ccd4d9;
+    outline: 0;
 }
 
 .signIn-btn {
@@ -32,4 +34,39 @@
 /*sign up*/
 .signUp-tabs {
     margin-top: 30px;
+}
+
+/*create course page*/
+.create-desc {
+    border-radius: 8px;
+    width: 495px;
+    height: 250px;
+    border: 2px solid #ccd4d9;
+    outline: 0;
+    margin-top: 30px;
+}
+
+.program-group1 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-left: 32%;
+    margin-right: 32%;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.program-group2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-left: 32%;
+    margin-right: 32%;
+    justify-content: space-around;
+    font-weight: bold;
+}
+
+.program-group {
+    margin-left: 15px;
+    margin-right: 15px;
 }
