@@ -4,7 +4,7 @@ const router = express.Router();
 const Course = require('../models/course');
 const Section = require('../models/section');
 const Comment = require('../models/comment');
-
+const User = require('../models/user');
 
 
 const { needAuth, hasAuth, hasPermission} = require('../config/authenticate');
@@ -31,7 +31,7 @@ router.get('/create', hasPermission, (req, res) => {
     }
     console.log(educator)
     res.render('create', {layout: 'navbar', user: false, username: req.user.username, educator: educator})
-})
+});
 
 
 router.post('/create', hasAuth, (req, res) => {
@@ -86,7 +86,7 @@ router.post('/create', hasAuth, (req, res) => {
 router.get('/:courseId', hasAuth, (req, res) => {
 
     let courseId = req.params.courseId
-    Course.findOne({ courseId: courseId })
+    Course.findOneAndUpdate({ courseId: courseId })
         .populate('sections')
         .exec(function(err, course) {
         if (err) {
@@ -100,6 +100,30 @@ router.get('/:courseId', hasAuth, (req, res) => {
         console.log("get all sections:", course);
         res.render('course', {layout: 'navbar', user: false, username: req.user.username, course: course, educator: educator});
     })
+});
+
+
+router.post('/:courseId／join', hasAuth, (req, res) => {
+    let courseId = req.params.courseId;
+    let userId = req.user.userId;
+
+    const newCourse = {
+        courseId: courseId,
+        grade: 'N/A',
+        progress: []
+    };
+
+    User.findOne({userId: userId}, {$push: {courses: newCourse }} , {new: true}, (err, doc) => {
+            if (err) {
+                console.log("Failed to register course");
+            }
+            var educator = false;
+            if (req.user.role == "educator") {
+                educator = true;
+            }
+            console.log("current user:", doc);
+            res.render('course', {layout: 'navbar', user: false, username: req.user.username, educator: educator});
+        })
 });
 
 
