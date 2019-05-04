@@ -110,7 +110,7 @@ router.get('/:courseId/addSection', hasAuth, (req, res) => {
 
 router.post('/:courseId/addSection', (req, res) => {
 
-    const { courseId, sectionId, videos, description } = req.body;
+    const { courseId, sectionId, video, description } = req.body;
 
     let err = [];
 
@@ -120,14 +120,12 @@ router.post('/:courseId/addSection', (req, res) => {
         const newSection = new Section({
             courseId: courseId,
             sectionId: sectionId,
-            videos: videos,
+            video: video,
             description: description,
             comments: []
         });
 
-        newSection.save(function (err) {
-            if (err) return handleError(err);
-        });
+        
         Course.findOneAndUpdate({courseId: courseId}, {$push: {sections: newSection }} , {new: true}, (err, doc) => {
             if (err) {
                 console.log("Failed to add sections");
@@ -138,7 +136,13 @@ router.post('/:courseId/addSection', (req, res) => {
             );
             console.log("successful save to database");
             console.log(doc);
-            res.redirect('/courses/' + courseId);
+
+            newSection
+                .save()
+                .then(() => {
+                    res.redirect('/courses/' + courseId);
+                })
+            //res.redirect('/courses/' + courseId);
         });
     }
 });
