@@ -103,9 +103,9 @@ router.get('/:courseId', hasAuth, (req, res) => {
 });
 
 
-router.post('/:courseId／join', hasAuth, (req, res) => {
+router.post('/:courseId/join',  (req, res) => {
     let courseId = req.params.courseId;
-    let userId = req.user.userId;
+    const userId = req.user.userId;
 
     const newCourse = {
         courseId: courseId,
@@ -113,7 +113,7 @@ router.post('/:courseId／join', hasAuth, (req, res) => {
         progress: []
     };
 
-    User.findOne({userId: userId}, {$push: {courses: newCourse }} , {new: true}, (err, doc) => {
+    User.findOneAndUpdate({userId: userId}, {$push: {courses: newCourse }} , {new: true}, (err, doc) => {
             if (err) {
                 console.log("Failed to register course");
             }
@@ -150,7 +150,9 @@ router.post('/:courseId/addSection', (req, res) => {
         });
 
         
-        Course.findOneAndUpdate({courseId: courseId}, {$push: {sections: newSection }} , {new: true}, (err, doc) => {
+        Course.findOneAndUpdate({courseId: courseId}, {$push: {sections: newSection }} , {new: true})
+            .populate('sections')
+            .exec(function (err, doc) {
             if (err) {
                 console.log("Failed to add sections");
             }
