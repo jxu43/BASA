@@ -72,18 +72,20 @@
                 <ul class="list course">
                     {{#each doc}}
                         <!--<div class="course-1">-->
-                        <a href="{{this.courseId}}" style="text-decoration: none;"><li class="list--list-item" data-age='{{this.age}}' style="border: none">
-                            <div class="course-1">
-                                <img src="/img/rocketscience.png" class="course-pic">
-                                <div style="margin: 10px">
-                                    <h3 class="courseId">{{this.courseId}}</h3>
-                                    <p class= "courseName">{{this.courseName}}</p>
-                                    <p class="agegroup">{{this.age}}</p>
-                                    <p class="subject">{{this.subject}}</p>
-                                    <p class="description">{{this.description}}</p>
+                       <li class="list--list-item" data-age='{{this.age}}' style="border: none">
+                            <a href="{{this.courseId}}" style="text-decoration: none;">
+                                <div class="course-1">
+                                    <img src="/img/rocketscience.png" class="course-pic">
+                                    <div style="margin: 10px">
+                                        <h3 class="courseId">{{this.courseId}}</h3>
+                                        <p class= "courseName">{{this.courseName}}</p>
+                                        <p class="agegroup">{{this.age}}</p>
+                                        <p class="subject">{{this.subject}}</p>
+                                        <p class="description">{{this.description}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li></a>
+                            </a>
+                        </li>
                         <!--</div>-->
                     {{/each}}
                 </ul>

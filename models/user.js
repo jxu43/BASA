@@ -29,13 +29,9 @@ var UserSchema = new mongoose.Schema({
         required: true,
     },
     parent: String,
-    child: String,
     courses: [{
         courseId: String,
-        grade: String,
-        progress: [{
-            checked: Boolean
-        }]
+        checked: Boolean
     }]
 });
 UserSchema.plugin(passportLocalMongoose);

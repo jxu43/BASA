@@ -29,7 +29,8 @@ var CourseSchema = new mongoose.Schema({
             type: Schema.Types.ObjectId,
             ref: "Section"
         }
-    ]
+    ], 
+    students: []
 })
 
 var Course = mongoose.model("Course", CourseSchema);

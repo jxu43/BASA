@@ -33,12 +33,25 @@
     <div style="width: 320px; margin-left: auto; margin-right: auto; margin-bottom: 60px">
         <h3>Sections</h3>
         <!-- <p style="font-size: 15px; font-weight: bolder; margin-left: -160px">Getting Started!</p> -->
+        {{#if join}}
         <ul type="circle" class="section-course">
             {{#each course.sections}}
                 <a href="{{../course.courseId}}/{{this.sectionId}}"><li>{{this.sectionId}}</li></a>
             {{/each}}
 
         </ul>
+        {{else if educator}}
+        <ul type="circle" class="section-course">
+            {{#each course.sections}}
+                <a href="{{../course.courseId}}/{{this.sectionId}}"><li>{{this.sectionId}}</li></a>
+            {{/each}}
+
+        </ul>
+        {{else}}
+            <form action="{{course.courseId}}/join" method="POST">
+                <input type="submit" name="join" value="Join" />
+            </form>
+        {{/if}}
 
         {{#if educator}}
         <a href="{{course.courseId}}/addSection"><button type="submit" class="signIn-btn">Add Section</button></a>

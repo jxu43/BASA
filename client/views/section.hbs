@@ -16,44 +16,32 @@
 </head>
 <body>
 <div class=" w3-center" style="width: 100%; overflow: auto; display: block;">
-    <div class="title" style="width: 100%; margin-top: 130px">
+    <div class="title" style="width: 100%; margin-top: 83px">
         <div class="text-title">
-            <h1>ROCKET SCIENCE</h1>
-            <p style="font-size: 1.5rem; font-weight: bold"> <i>Learn the principles of Rocket Science by building your own rocket!</i></p>
-            <span style="font-weight: bold">Author </span><span>123</span>
+            <h1>{{doc.sectionId}}</h1>
+            <p style="font-size: 1.5rem; font-weight: bold"> <i>{{doc.subtitle}}</i></p>
             <div class="tag"></div>
         </div>
     </div>
 
-    <div style="width: 80%; margin-left: auto; margin-right: auto; margin-bottom: 60px; margin-top: 30px;">
-        <p style="font-size: 20px; font-weight: bolder">Getting Started!</p>
-        <ul type="circle" class="section-course">
-            <li>
-                <div>
-                    <p>What is Firebase?</p>
-                    <div>
-                        <img src="/img/rocketscience.png" class="section-video">
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <p>What is Firebase?</p>
-                    <div>
-                        <img src="/img/rocketscience.png" class="section-video">
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <p>What is Firebase?</p>
-                    <div>
-                        <img src="/img/rocketscience.png" class="section-video">
-                    </div>
-                </div>
-            </li>
-        </ul>
+    <div style="width: 100%; margin-left: auto; margin-right: auto; margin-bottom: 60px; margin-top: 30px;">
+        <iframe src="{{doc.video}}" width="880" height="560" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        <div style="width: 80%; margin-left: auto; margin-right: auto;"><p style="font-size: 15px; text-align: left;">{{doc.description}}</p></div>
+    
     </div>
+
+
+    {{#if nonfirst}}
+        <form action="{{doc.sectionId}}/prev" method="POST">
+            <input type="submit" name="previous" value="Previous" />
+        </form>
+    {{/if}}
+
+    {{#if nonlast}}
+        <form action="{{doc.sectionId}}/last" method="POST">
+            <input type="submit" name="next" value="Next" />
+        </form>
+    {{/if}}
 
     <div style="width: 100%; height: 40px; background-color: rgb(26, 190, 229); margin-top: 40px; margin-bottom: 60px"></div>
 
@@ -62,62 +50,42 @@
     <div class="comments">
 
         <div class="comment-field">
-            <!-- comments container -->
             <div class="comment_block">
-                <!-- new comment -->
-                <div class="new_comment">
-                    <!-- current #{user} avatar -->
-                    <div class="user_avatar">
-                        <img src="https://s3.amazonaws.com/uifaces/faces/twitter/manugamero/73.jpg">
-                    </div><!-- the comment body -->
-                    <div class="comment_body">
-                    <p><div class="replied_to"><p><span class="user">John Smith:</span>Gastropub cardigan jean shorts, kogi Godard PBR&B lo-fi locavore. Organic chillwave vinyl Neutra. Bushwick Helvetica cred freegan, crucifix Godard craft beer deep v mixtape cornhole Truffaut master cleanse pour-over Odd Future beard. Portland polaroid iPhone.</p></div>That's exactly what I was thinking!</p>
-                    </div>
-
-                <!-- comments toolbar -->
-                    <div class="comment_toolbar">
-                        <!-- inc. date and time -->
-                        <div class="comment_details">
-                            <ul>
-                                <li><i class="fa fa-clock-o"></i> 14:52</li>
-                                <li><i class="fa fa-calendar"></i> 04/01/2015</li>
-                                <li><i class="fa fa-pencil"></i> <span class="user">Andrew Johnson</span></li>
-                            </ul>
-                        </div>
-
-                        <form class="comment-form">
-                            <input type="text" name="reply" placeholder=" Add Your Comment.." class="addComment">
-                            <input type="submit" value="Submit" class="comment-btn">
-                        </form>
-                    </div>
-                </div>
-
-                <!-- new comment -->
-                <div class="new_comment">
-                    <!-- current #{user} avatar -->
-                        <div class="user_avatar">
-                            <img src="https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/73.jpg">
-                        </div>
+                {{#each doc.comments}}
+                     <div class="new_comment">
                         <div class="comment_body">
-                            <p>Gastropub cardigan jean shorts, kogi Godard PBR&B lo-fi locavore. Organic chillwave vinyl Neutra. Bushwick Helvetica cred freegan, crucifix Godard craft beer deep v mixtape cornhole Truffaut master cleanse pour-over Odd Future beard. Portland polaroid iPhone.</p>
+                            <p>
+                                <div class="replied_to">
+                                    <p><span class="user">{{this.userId}}</span>{{this.content}}</p>
+                                   <div class="comment_details">
+                                    <ul>
+                                        <li><i class="fa fa-clock-o"></i>{{this.time}}</li>
+                                        <li><i class="fa fa-pencil"></i> <span class="user">{{this.userId}}</span></li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </p>   
                         </div>
+                        <div class="comment_toolbar">
+                            {{#each this.replies}}
+                                {{this.content}}
+                                <div class="comment_details">
+                                    <ul>
+                                        <li><i class="fa fa-clock-o"></i>{{this.time}}</li>
+                                        <li><i class="fa fa-pencil"></i> <span class="user">{{this.userId}}</span></li>
+                                    </ul>
+                                </div>
+                            {{/each}}
+                        
+                            <form class="comment-form" method="POST" action="{{this.sectionId}}/{{this.commentId}}/addReply">
+                                <input type="text" name="reply" placeholder=" Add Your reply.." class="addComment">
+                                <input type="submit" value="Submit" class="comment-btn">
+                            </form>
+                        </div>
+                     </div>
+                {{/each}}
 
-                <!-- comments toolbar -->
-                    <div class="comment_toolbar">
-                        <!-- inc. date and time -->
-                        <div class="comment_details">
-                            <ul>
-                                <li><i class="fa fa-clock-o"></i> 13:94</li>
-                                <li><i class="fa fa-calendar"></i> 04/01/2015</li>
-                                <li><i class="fa fa-pencil"></i> <span class="user">Sarah Walkman</span></li>
-                            </ul>
-                        </div>
-                        <form class="comment-form">
-                            <input type="text" name="reply" placeholder=" Add Your Comment.." class="addComment">
-                            <input type="submit" value="Submit" class="comment-btn">
-                        </form>
-                    </div>
-                </div>
+
             </div>
         </div>
 
@@ -125,9 +93,9 @@
 
     <div style="margin-top: 20px; margin-bottom: 20px; display: flex; justify-content: center"><ul class="pagination"></ul></div>
 
-    <form>
+    <form method="POST" action="{{doc.sectionId}}/addComment">
         <div>
-            <textarea name="comment" class="create-comment" placeholder=" Add Your Comment.."></textarea>
+            <textarea name="content" class="create-comment" placeholder=" Add Your Comment.."></textarea>
         </div>
         <input type="submit" value="Submit" class="signIn-btn">
     </form>

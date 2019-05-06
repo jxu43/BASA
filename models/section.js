@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var SectionSchema = new mongoose.Schema({
     courseId: {type: String},
     sectionId: {type: String},
-    video: {types: String},
+    subtitle: {type: String},
+    video: {type: String, unique: false},
     description: {type: String},
     comments: [
         {

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/signIn.css">
+    <link rel="stylesheet" href="/css/w3.css">
+    <link rel="stylesheet" href="/css/course.css">
+    <link rel="stylesheet" href="/css/section.css">
+    <link rel="stylesheet" href="/css/comment.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/footer.js"></script>
+</head>
+<body>
+<div class="container target" style="display: flex; flex-direction: row; margin-top: 83px;">
+    <div class="profile-left">
+        <div class="profile-title">
+
+            <div class="col-sm-4 "> 
+                <img title="profile image" class="img-circle img-responsive" src="http://www.rlsandbox.com/img/profile.jpg">
+            </div>
+        </div>
+        <br>
+
+
+        <div class="col-sm-9">
+            <div class="profile-info">
+                <h3>Profile</h3>
+                <div class="list-group-item text-muted">{{username}}</div>
+                <div class="list-group-item text-muted">{{doc.role}}</div>
+                {{#if kid}}
+                <div class="list-group-item text-muted">{{doc.parent}}</div>
+                {{/if}}
+            </div>
+
+        </div>
+    </div>
+
+    <div class="profile-right">
+        {{#if parent}}
+            <div class="col-sm-9">
+                {{#each kids}}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{this.username}}</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                {{#each this.courses}}
+                                <div class="col-md-4">
+                                    <div class="thumbnail">
+                                        <h3>
+                                            {{this.courseId}}
+                                        </h3>
+                                        <p>
+                                            {{#if this.checked}} 
+                                                <div>Finished</div>
+                                            {{else}}
+                                                <div>Ongoing</div>
+                                            {{/if}}
+                                        </p>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        {{else if kid}}
+            <div class="col-sm-9">
+                <div class="panel-body">
+                    <div class="row">
+                        {{#each doc.courses}}
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <h3>
+                                        {{this.courseId}}
+                                    </h3>
+                                    {{#if this.checked}} 
+                                        <div>Finished</div>
+                                    {{else}}
+                                        <div>Ongoing</div>
+                                    {{/if}}
+                                    
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        {{else}}
+            <div class="col-sm-9">
+                <div class="panel-body">
+                    <div class="row">
+                        {{#each courses}}
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <h3>
+                                        {{this.courseId}}
+                                    </h3>
+                                    <div>{{this.courseName}}</div>
+                                    <div>{{this.subject}}</div>
+                                    </p>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</div>
+</body>
+</html>

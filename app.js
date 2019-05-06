@@ -6,6 +6,7 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const cors = require('cors');
+const autoIncrement = require('mongoose-auto-increment');
 
 
 // set up express
@@ -50,6 +51,7 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+autoIncrement.initialize(db);
 
 // Connect Flash
 app.use(flash());

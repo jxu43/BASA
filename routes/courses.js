@@ -86,7 +86,7 @@ router.post('/create', hasAuth, (req, res) => {
 router.get('/:courseId', hasAuth, (req, res) => {
 
     let courseId = req.params.courseId
-    Course.findOneAndUpdate({ courseId: courseId })
+    Course.findOne({ courseId: courseId })
         .populate('sections')
         .exec(function(err, course) {
         if (err) {
@@ -97,8 +97,12 @@ router.get('/:courseId', hasAuth, (req, res) => {
         if (req.user.role == "educator") {
             educator = true;
         }
+        let join = false;
+        if (course.students.includes(req.user.userId)) {
+            join = true;
+        }
         console.log("get all sections:", course);
-        res.render('course', {layout: 'navbar', user: false, username: req.user.username, course: course, educator: educator});
+        res.render('course', {layout: 'navbar', user: false, username: req.user.username, course: course, educator: educator, join, join});
     })
 });
 
@@ -106,25 +110,30 @@ router.get('/:courseId', hasAuth, (req, res) => {
 router.post('/:courseId/join',  (req, res) => {
     let courseId = req.params.courseId;
     const userId = req.user.userId;
-
-    const newCourse = {
-        courseId: courseId,
-        grade: 'N/A',
-        progress: []
-    };
-
-    User.findOneAndUpdate({userId: userId}, {$push: {courses: newCourse }} , {new: true}, (err, doc) => {
+    Course.findOneAndUpdate({ courseId: courseId }, {$push: {students: userId}}, (err, course) => {
+        if (err) {
+            console.log("Failed to join a course")
+        }
+        req.flash(
+            'success_msg',
+            'Course Joined'
+        );
+        let section_length = course.sections.length;
+        const newCourse = {
+            courseId: courseId,
+            // progress: Array(section_length).fill(false)
+        };
+        User.findOneAndUpdate({userId: userId}, {$push: {courses: newCourse }} , {new: true}, (err, doc) => {
             if (err) {
                 console.log("Failed to register course");
             }
-            var educator = false;
-            if (req.user.role == "educator") {
-                educator = true;
-            }
-            console.log("current user:", doc);
-            res.render('course', {layout: 'navbar', user: false, username: req.user.username, educator: educator});
+            let redirect_url = "/courses/" + courseId
+            res.redirect(redirect_url);
         })
+    })
 });
+
+
 
 
 router.get('/:courseId/addSection', hasAuth, (req, res) => {
@@ -134,7 +143,7 @@ router.get('/:courseId/addSection', hasAuth, (req, res) => {
 
 router.post('/:courseId/addSection', (req, res) => {
 
-    const { courseId, sectionId, video, description } = req.body;
+    const { courseId, sectionId, subtitle, video, description } = req.body;
 
     let err = [];
 
@@ -144,6 +153,7 @@ router.post('/:courseId/addSection', (req, res) => {
         const newSection = new Section({
             courseId: courseId,
             sectionId: sectionId,
+            subtitle: subtitle,
             video: video,
             description: description,
             comments: []
@@ -178,45 +188,86 @@ router.post('/:courseId/addSection', (req, res) => {
 router.get('/:courseId/:sectionId', (req, res) => {
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
-    Section.findOne({ sectionId: sectionId, courseId: courseId })
+    let nonlast = true;
+    let nonfirst = true;
+    Section.findOne({ courseId: courseId, sectionId: sectionId})
         .populate('comments')
         .exec(function (err, doc) {
+
             if (err) {
                 console.log("Failed to retrieve sections");
             }
-            console.log("get section:", doc);
-            res.render('section', {layout: 'navbar', doc: doc, user: true, username: req.user.username});
+            Course.findOne({courseId: courseId})
+            .populate('sections')
+            .exec(function(err, course) {
+                if (err) {
+                    console.log("Failed to retrieve sections");
+                }
+                let index = course.sections.findIndex(x => x.sectionId === sectionId);
+                nonlast = index != (course.sections.length - 1);
+                nonfirst = index != 0;
+                res.render('section', {layout: 'navbar', doc: doc, user: false, username: req.user.username, nonlast: nonlast, nonfirst: nonfirst});
+            })
         })
 });
 
 
-
-
-router.get('/:courseId/:sectionId/:commentId', (req, res) => {
-    const { courseId, sectionId, commentId } = req.body;
-    Comment.findOne({ sectionId: sectionId, courseId: courseId, commentId: commentId })
-        .exec(function (err, doc) {
+router.post('/:courseId/:sectionId/last', (req, res) => {
+    console.log("entered");
+    let courseId = req.params.courseId;
+    let sectionId = req.params.sectionId;
+    Course.findOne({courseId: courseId})
+        .populate('sections')
+        .exec(function(err, course) {
             if (err) {
-                console.log("Failed to retrieve comments");
+                console.log("Failed to go to the next section")
             }
-            console.log("get comment:", doc);
-            res.render('catalog', {layout: 'navbar', doc: doc});
-        })
+            let index = course.sections.findIndex(x => x.sectionId ===sectionId);
+            // console.log(index);
+            let next_section = course.sections[index+1];
+            let redirect_url = "/courses/" + courseId + "/" + next_section.sectionId;
+            res.redirect(redirect_url)
+        
+        });
 });
+
+router.post('/:courseId/:sectionId/prev', (req, res) => {
+    let courseId = req.params.courseId;
+    let sectionId = req.params.sectionId;
+    Course.findOne({courseId: courseId})
+        .populate('sections')
+        .exec(function(err, course) {
+            if (err) {
+                console.log("Failed to go to the previous section")
+            }
+            let index = course.sections.findIndex(x => x.sectionId ===sectionId);
+            // console.log(index);
+            let prev_section = course.sections[index-1];
+            let redirect_url = "/courses/" + courseId + "/" + prev_section.sectionId;
+            res.redirect(redirect_url)
+
+        });
+});
+
 
 
 router.post('/:courseId/:sectionId/addComment', (req, res) => {
-    const { courseId, sectionId, commentId, time, content } = req.body;
+    console.log("entered");
+    const { content } = req.body;
+    let courseId = req.params.courseId;
+    let sectionId = req.params.sectionId;
 
-    if (!sectionId || !courseId || !commentId || !content) {
+    req.body.time = new Date();
+    let err = [];
+    if (!content) {
         err.push({ msg: 'Missing entries' });
     } else{
         const newComment = new Comment({
+            userId: req.user.username,
             courseId: courseId,
             sectionId: sectionId,
-            commentId: commentId,
             content: content,
-            time: time,
+            time: req.body.time,
             replies: []
         });
 
@@ -234,29 +285,50 @@ router.post('/:courseId/:sectionId/addComment', (req, res) => {
             );
             //console.log("new comment is", newComment);
             console.log("successful save to database");
-            console.log(doc);
-
-            res.redirect('/:courseId/:sectionId');
+            console.log(doc.comments.userId);
+            let redirect_url = "/courses/" + courseId + "/" + sectionId;
+            res.redirect(redirect_url);
         });
     }
 });
 
-router.post('/:courseId/:sectionId/:commentId/addReply', (req, res) => {
-    const { courseId, sectionId, original_id, reply_id, time, content } = req.body;
 
-    if (!sectionId || !courseId || !original_id || !reply_id || !content) {
+
+router.get('/:courseId/:sectionId/:commentId', (req, res) => {
+    const { courseId, sectionId, commentId } = req.body;
+    Comment.findOne({ sectionId: sectionId, courseId: courseId, commentId: commentId })
+        .exec(function (err, doc) {
+            if (err) {
+                console.log("Failed to retrieve comments");
+            }
+            console.log("get comment:", doc);
+            res.render('catalog', {layout: 'navbar', doc: doc});
+        })
+});
+
+
+
+
+router.post('/:courseId/:sectionId/:commentId/addReply', (req, res) => {
+    const { reply } = req.body;
+    let courseId = req.params.courseId;
+    let sectionId = req.params.sectionId;
+    let commentId = req.params.commentId;
+    let err = [];
+    if (!reply) {
         err.push({ msg: 'Missing entries' });
     } else{
+        req.body.time = new Date();
         const newComment = new Comment({
             courseId: courseId,
             sectionId: sectionId,
-            commentId: reply_id,
-            content: content,
-            time: time,
+            commentId: commentId,
+            content: reply,
+            time: req.body.time,
             replies: []
         });
 
-        Comment.findOneAndUpdate({courseId: courseId, sectionId: sectionId, commentId: original_id}, {$push: {replies: newComment }} , {new: true}, (err, doc) => {
+        Comment.findOneAndUpdate({courseId: courseId, sectionId: sectionId, commentId: commentId}, {$push: {replies: newComment }} , {new: true}, (err, doc) => {
             if (err) {
                 console.log("Failed to add reply");
             }
@@ -266,7 +338,8 @@ router.post('/:courseId/:sectionId/:commentId/addReply', (req, res) => {
             );
             console.log("successful save to database");
             console.log(doc);
-            res.redirect('/:courseId/:sectionId');
+            let redirect_url = "/courses/" + courseId + "/" + sectionId;
+            res.redirect(redirect_url);
         });
     }
 });

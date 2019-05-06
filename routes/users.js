@@ -77,76 +77,49 @@ router.post('/login', (req, res, next) => {
 // get profile
 router.get('/profile', (req, res) => {
 
-    console.log(req.user);
     let userId = req.user.userId;
     let role = req.user.role;
     let name = req.user.username;
-
-    console.log(name);
     let err = [];
 
-    User.find({ userId: 'finally123' }, (err,doc) =>{
-        console.log(doc);
-    });
+    if (role == 'kid'){
+        User.findOne({ userId: userId }, function(err, doc){
+            if(err){
+                console.log(err);
+            } else{
+                res.render('profile', {layout: 'navbar', user: false, username: req.user.username, doc: doc, kid: true});
+            }
+        })
+    } else if (role == 'parent'){
+        User.findOne({ userId: userId }, function(err, doc1){
+            if(err){
+                console.log(err);
+            } else{
+                User.find({parent: name}, function(err, doc2) {
+                    res.render('profile', {layout: 'navbar', user: false, username: req.user.username, doc: doc1, kids: doc2, parent: true});
+                })
+                
+            }
+        })
+    } else if (role == 'educator'){
+        User.findOne({ userId: userId }, function(err, doc1){
+            if(err){
+                console.log(err);
+            } else{
+                Course.find({ educatorId: userId }, function(err, doc2){
+                    if(err){
+                        console.log(err);
+                    } else{
+                        res.render('profile', {layout: 'navbar', user: false, username: req.user.username, courses: doc2, doc: doc1, educator: true});
+                    }
+                })
+            }
+        })
 
-    if (!userId || !role) {
-        err.push({ msg: 'Missing Entries' });
-    }
-
-    if (err.length > 0) {
-        console.log(err);
-        res.render('register', {
-            err,
-        });
-    } else {
-        if (role == 'kid'){
-            User.findOne({ userId: userId }, function(err, doc){
-                if(err){
-                    console.log(err);
-                } else{
-                    console.log(doc);
-                    console.log(1);
-                    res.render('', {layout: 'navbar', user: false, username: req.user.username, doc: doc, educator: false});
-                }
-            })
-        }
-        else if (role == 'parent'){
-            User.find({ parent: name }, function(err, doc){
-                if(err){
-                    console.log(err);
-                } else{
-                    console.log(doc);
-                    console.log(2);
-                    res.render('', {layout: 'navbar', user: false, username: req.user.username, doc: doc, educator: false});
-                }
-            })
-        }
-        else if (role == 'educator'){
-            User.find({ userId: userId }, function(err, doc1){
-                if(err){
-                    console.log(err);
-                } else{
-                    console.log(doc1);
-                    console.log(3);
-                    Course.find({ educatorId: userId }, function(err, doc2){
-                        if(err){
-                            console.log(err);
-                        } else{
-                            console.log(doc2);
-                            console.log(3);
-                            res.render('', {layout: 'navbar', user: false, username: req.user.username, courses: doc2, doc: doc1, educator: false});
-                        }
-                    })
-                }
-            })
-
-        }
-        else{
+    } else{
             err.push({ msg: 'Wrong role' });
             console.log(err);
-        }
     }
-
 
 });
 
