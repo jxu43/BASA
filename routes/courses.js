@@ -206,7 +206,8 @@ router.get('/:courseId/:sectionId', (req, res) => {
                 let index = course.sections.findIndex(x => x.sectionId === sectionId);
                 nonlast = index != (course.sections.length - 1);
                 nonfirst = index != 0;
-                res.render('section', {layout: 'navbar', doc: doc, user: false, username: req.user.username, nonlast: nonlast, nonfirst: nonfirst});
+                let kid = req.user.role == "kid";
+                res.render('section', {layout: 'navbar', doc: doc, user: false, kid: kid, username: req.user.username, nonlast: nonlast, nonfirst: nonfirst});
             })
         })
 });
@@ -247,6 +248,20 @@ router.post('/:courseId/:sectionId/prev', (req, res) => {
             res.redirect(redirect_url)
 
         });
+});
+
+
+router.post('/:courseId/:sectionId/check', (req, res) => {
+    let userId = req.user.userId
+    let courseId = req.params.courseId;
+    let sectionId = req.params.sectionId;
+    User.findOneAndUpdate({userId: userId, "courses.courseId": courseId}, {$set: {"courses.$.checked": true}}, (err, user) => {
+        if (err) {
+            console.log(err);
+        } 
+        res.redirect("/users/profile");
+    })
+       
 });
 
 
