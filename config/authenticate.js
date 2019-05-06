@@ -13,7 +13,6 @@ module.exports = {
         res.redirect('/')
     },
 
-// check permission of the user to determine is she/he can access the page
     hasPermission: function(req, res, next) {
          if (req.isAuthenticated()) {
             if (req.user.role == "educator") {

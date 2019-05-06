@@ -4,7 +4,8 @@ const passport = require('passport');
 
 const User = require('../models/user');
 const Course = require('../models/course');
-const { needAuth } = require('../config/authenticate');
+
+const { needAuth, hasAuth, hasPermission} = require('../config/authenticate');
 
 // Get Login Page
 router.get('/login', needAuth, (req, res) => res.render('login', {layout: 'navbar', user: true}));
@@ -15,7 +16,6 @@ router.get('/register', needAuth, (req, res) => res.render('register', {layout: 
 // Register Route
 router.post('/register', (req, res) => {
 
-    console.log(req.body);
     const { email, username, password, repeatPassword, role, parentId, childId } = req.body;
 
     let err = [];
@@ -29,33 +29,61 @@ router.post('/register', (req, res) => {
     }
 
     if (err.length > 0) {
-        console.log(err);
-        res.render('register', {
-            err,
-        });
+        res.render('register', {message: err});
+
     } else {
-        const registerUser = new User({
-                                userId: username+password,
-                                email: email,
-                                username: username,
-                                password: password,
-                                role: role,
-                                parent: parentId,
-                                child: childId,
-                                courses: []
+        if (parentId) {
+            User.findOne({username: parentId}, (err, doc) => {
+                if (doc.username && doc.role == "parent") {
+                    const registerUser = new User({
+                                            userId: username+password,
+                                            email: email,
+                                            username: username,
+                                            password: password,
+                                            role: role,
+                                            parent: parentId,
+                                            child: childId,
+                                            courses: []
+                                        });
+                    User.register(registerUser, password, function(err, user){
+                        if(err){
+                            console.log(err)
+                            res.render('register', {layout: 'navbar', user: true, message: 'Your registration information is not valid'})
+                        } else{
+                            passport.authenticate('local')(req, res, function(){
+                                console.log("LoggedIn as: ", user.username);
+                                res.redirect('/');
                             });
-        User.register(registerUser, password, function(err, user){
-            if(err){
-                console.log(err)
-                res.render('register', {layout: 'navbar', user: true, message: 'Your registration information is not valid'})
-            } else{
-                console.log(user)
-                passport.authenticate('local')(req, res, function(){
-                    console.log("LoggedIn as: ", user.username);
-                    res.redirect('/');
-                });
-            }
-        })
+                        }
+                    })
+                } else {
+                    res.render('register', {layout: 'navbar', user: true, message: "Please Enter a Valid Parent ID"})
+                }
+            })
+        } else {
+            const registerUser = new User({
+                                    userId: username+password,
+                                    email: email,
+                                    username: username,
+                                    password: password,
+                                    role: role,
+                                    parent: parentId,
+                                    child: childId,
+                                    courses: []
+                                });
+            User.register(registerUser, password, function(err, user){
+                if(err){
+                    console.log(err)
+                    res.render('register', {layout: 'navbar', user: true, message: 'Your registration information is not valid'})
+                } else{
+                    passport.authenticate('local')(req, res, function(){
+                        console.log("LoggedIn as: ", user.username);
+                        res.redirect('/users/profile');
+                    });
+                }
+            })
+        }
+
     }
 });
 
@@ -75,7 +103,7 @@ router.post('/login', (req, res, next) => {
 });
 
 // get profile
-router.get('/profile', (req, res) => {
+router.get('/profile', hasAuth, (req, res) => {
 
     let userId = req.user.userId;
     let role = req.user.role;

@@ -16,15 +16,20 @@ router.get('/', (req, res) => {
 });
 
 router.get('/about', (req, res) => {
-	res.render('about', {layout: 'navbar'})
+	let bl = true;
+	let educator = false;
+	if (req.user) {
+		bl = false;
+		if (req.user.role == "educator") {
+	            educator = true;
+    	}
+    	res.render('about', {layout: 'navbar', user: bl, educator: educator, username: req.user.username})
+	} else {
+		res.render('about', {layout: 'navbar', user: bl});
+	}
+	
 });
 
-// Dashboard
-// router.get('/login-home', hasAuth, (req, res) =>
-//     res.render('welcome', {
-//         user: req.user
-//     })
-// );
 
 module.exports = router;
 

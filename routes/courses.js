@@ -29,13 +29,12 @@ router.get('/create', hasPermission, (req, res) => {
     if (req.user.role == "educator") {
             educator = true;
     }
-    console.log(educator)
+
     res.render('create', {layout: 'navbar', user: false, username: req.user.username, educator: educator})
 });
 
 
 router.post('/create', hasAuth, (req, res) => {
-    console.log(req.body);
 
     const { courseId, courseName, age, description, subject} = req.body;
 
@@ -66,7 +65,6 @@ router.post('/create', hasAuth, (req, res) => {
                     description: req.body.description,
                     educatorId: req.user.userId
                 });
-                console.log("new course:", newCourse);
                 newCourse
                     .save()
                     .then(() => {
@@ -74,7 +72,6 @@ router.post('/create', hasAuth, (req, res) => {
                             'success_msg',
                             'Course are now created'
                         );
-                        console.log("successful save to database");
                         res.redirect('/courses/catalog');
                     })
                     .catch(err => console.log(err));
@@ -101,13 +98,13 @@ router.get('/:courseId', hasAuth, (req, res) => {
         if (course.students.includes(req.user.userId)) {
             join = true;
         }
-        console.log("get all sections:", course);
-        res.render('course', {layout: 'navbar', user: false, username: req.user.username, course: course, educator: educator, join, join});
+        let parent = req.user.role == "parent";
+        res.render('course', {layout: 'navbar', user: false, parent: parent, username: req.user.username, course: course, educator: educator, join, join});
     })
 });
 
 
-router.post('/:courseId/join',  (req, res) => {
+router.post('/:courseId/join', hasAuth, (req, res) => {
     let courseId = req.params.courseId;
     const userId = req.user.userId;
     Course.findOneAndUpdate({ courseId: courseId }, {$push: {students: userId}}, (err, course) => {
@@ -136,12 +133,12 @@ router.post('/:courseId/join',  (req, res) => {
 
 
 
-router.get('/:courseId/addSection', hasAuth, (req, res) => {
+router.get('/:courseId/addSection', hasPermission, (req, res) => {
     res.render('addSection', {layout: 'navbar', user: false, username: req.user.username, courseId: req.params.courseId})
 })
 
 
-router.post('/:courseId/addSection', (req, res) => {
+router.post('/:courseId/addSection', hasPermission, (req, res) => {
 
     const { courseId, sectionId, subtitle, video, description } = req.body;
 
@@ -170,22 +167,19 @@ router.post('/:courseId/addSection', (req, res) => {
                 'success_msg',
                 'Section is now added'
             );
-            console.log("successful save to database");
-            console.log(doc);
-
             newSection
                 .save()
                 .then(() => {
-                    res.redirect('/courses/' + courseId);
+                    res.redirect('/courses/' + courseId + "/" + sectionId);
                 })
-            //res.redirect('/courses/' + courseId);
+
         });
     }
 });
 
 
 
-router.get('/:courseId/:sectionId', (req, res) => {
+router.get('/:courseId/:sectionId', hasAuth, (req, res) => {
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
     let nonlast = true;
@@ -213,8 +207,7 @@ router.get('/:courseId/:sectionId', (req, res) => {
 });
 
 
-router.post('/:courseId/:sectionId/last', (req, res) => {
-    console.log("entered");
+router.post('/:courseId/:sectionId/last', hasAuth, (req, res) => {
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
     Course.findOne({courseId: courseId})
@@ -224,7 +217,6 @@ router.post('/:courseId/:sectionId/last', (req, res) => {
                 console.log("Failed to go to the next section")
             }
             let index = course.sections.findIndex(x => x.sectionId ===sectionId);
-            // console.log(index);
             let next_section = course.sections[index+1];
             let redirect_url = "/courses/" + courseId + "/" + next_section.sectionId;
             res.redirect(redirect_url)
@@ -232,7 +224,7 @@ router.post('/:courseId/:sectionId/last', (req, res) => {
         });
 });
 
-router.post('/:courseId/:sectionId/prev', (req, res) => {
+router.post('/:courseId/:sectionId/prev', hasAuth, (req, res) => {
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
     Course.findOne({courseId: courseId})
@@ -242,7 +234,6 @@ router.post('/:courseId/:sectionId/prev', (req, res) => {
                 console.log("Failed to go to the previous section")
             }
             let index = course.sections.findIndex(x => x.sectionId ===sectionId);
-            // console.log(index);
             let prev_section = course.sections[index-1];
             let redirect_url = "/courses/" + courseId + "/" + prev_section.sectionId;
             res.redirect(redirect_url)
@@ -251,7 +242,7 @@ router.post('/:courseId/:sectionId/prev', (req, res) => {
 });
 
 
-router.post('/:courseId/:sectionId/check', (req, res) => {
+router.post('/:courseId/:sectionId/check', hasAuth, (req, res) => {
     let userId = req.user.userId
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
@@ -266,8 +257,7 @@ router.post('/:courseId/:sectionId/check', (req, res) => {
 
 
 
-router.post('/:courseId/:sectionId/addComment', (req, res) => {
-    console.log("entered");
+router.post('/:courseId/:sectionId/addComment', hasAuth, (req, res) => {
     const { content } = req.body;
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
@@ -298,9 +288,7 @@ router.post('/:courseId/:sectionId/addComment', (req, res) => {
                 'success_msg',
                 'Comment is now added'
             );
-            //console.log("new comment is", newComment);
-            console.log("successful save to database");
-            console.log(doc.comments.userId);
+
             let redirect_url = "/courses/" + courseId + "/" + sectionId;
             res.redirect(redirect_url);
         });
@@ -308,23 +296,7 @@ router.post('/:courseId/:sectionId/addComment', (req, res) => {
 });
 
 
-
-router.get('/:courseId/:sectionId/:commentId', (req, res) => {
-    const { courseId, sectionId, commentId } = req.body;
-    Comment.findOne({ sectionId: sectionId, courseId: courseId, commentId: commentId })
-        .exec(function (err, doc) {
-            if (err) {
-                console.log("Failed to retrieve comments");
-            }
-            console.log("get comment:", doc);
-            res.render('catalog', {layout: 'navbar', doc: doc});
-        })
-});
-
-
-
-
-router.post('/:courseId/:sectionId/:commentId/addReply', (req, res) => {
+router.post('/:courseId/:sectionId/:commentId/addReply', hasAuth, (req, res) => {
     const { reply } = req.body;
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
@@ -351,8 +323,6 @@ router.post('/:courseId/:sectionId/:commentId/addReply', (req, res) => {
                 'success_msg',
                 'reply is now added'
             );
-            console.log("successful save to database");
-            console.log(doc);
             let redirect_url = "/courses/" + courseId + "/" + sectionId;
             res.redirect(redirect_url);
         });
