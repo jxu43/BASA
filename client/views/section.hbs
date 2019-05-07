@@ -33,18 +33,18 @@
 
     {{#if nonfirst}}
         <form action="{{doc.sectionId}}/prev" method="POST">
-            <input type="submit" name="previous" value="Previous" />
+            <input type="submit" name="previous" value="Previous" class="signIn-btn"/>
         </form>
     {{/if}}
 
     {{#if nonlast}}
         <form action="{{doc.sectionId}}/last" method="POST">
-            <input type="submit" name="next" value="Next" />
+            <input type="submit" name="next" value="Next" class="signIn-btn" />
         </form>
     {{else}} 
         {{#if kid}}
         <form action="{{doc.sectionId}}/check" method="POST">
-            <input type="submit" name="complete" value="Complete" />
+            <input type="submit" name="complete" value="Complete" class="signIn-btn" />
         </form>
         {{/if}}
     {{/if}}
@@ -62,23 +62,23 @@
                         <div class="comment_body">
                             <p>
                                 <div class="replied_to">
-                                    <p><span class="user">{{this.userId}}</span>{{this.content}}</p>
+                                    <p><span style="color: black; font-weight: bold">{{this.userId}}: </span>{{this.content}}</p>
                                    <div class="comment_details">
-                                    <ul>
+                                    <ul style="float: left; margin-top: 10px">
+                                        <li><i class="fa fa-pencil"></i> <span style="color: #555">{{this.userId}}</span></li>
                                         <li><i class="fa fa-clock-o"></i>{{this.time}}</li>
-                                        <li><i class="fa fa-pencil"></i> <span class="user">{{this.userId}}</span></li>
                                     </ul>
-                                </div>
+                                    </div>
                                 </div>
                             </p>   
                         </div>
                         <div class="comment_toolbar">
                             {{#each this.replies}}
-                                {{this.content}}
                                 <div class="comment_details">
+                                    <p style="text-align: center; padding-top: 10px; color: #555">{{this.content}}</p>
                                     <ul>
-                                        <li><i class="fa fa-clock-o"></i>{{this.time}}</li>
                                         <li><i class="fa fa-pencil"></i> <span class="user">{{this.userId}}</span></li>
+                                        <li><i class="fa fa-clock-o"></i>{{this.time}}</li>
                                     </ul>
                                 </div>
                             {{/each}}
@@ -103,7 +103,7 @@
         <div>
             <textarea name="content" class="create-comment" placeholder=" Add Your Comment.."></textarea>
         </div>
-        <input type="submit" value="Submit" class="signIn-btn">
+        <input type="submit" value="Submit" class="signIn-btn" style="margin-bottom: 60px">
     </form>
 </div>
 </body>
