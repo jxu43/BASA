@@ -301,7 +301,7 @@ router.post('/:courseId/:sectionId/addComment', hasAuth, (req, res) => {
 
 router.post('/:courseId/:sectionId/:commentId/addReply', hasAuth, (req, res) => {
     const { reply } = req.body;
-    let userId = req.user.userId;
+    let userId = req.user.username;
     let courseId = req.params.courseId;
     let sectionId = req.params.sectionId;
     let commentId = req.params.commentId;
