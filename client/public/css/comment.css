@@ -101,7 +101,7 @@ body {
 }
 .comment_block .new_comment .comment_toolbar ul {
   list-style-type: none;
-  padding-left: 75px;
+  padding-left: 5px;
   font-size: 0;
 }
 .comment_block .new_comment .comment_toolbar ul li {
