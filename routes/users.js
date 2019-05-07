@@ -34,7 +34,7 @@ router.post('/register', (req, res) => {
     } else {
         if (parentId) {
             User.findOne({username: parentId}, (err, doc) => {
-                if (doc.username && doc.role == "parent") {
+                if (doc && doc.username && doc.role == "parent") {
                     const registerUser = new User({
                                             userId: username+password,
                                             email: email,
