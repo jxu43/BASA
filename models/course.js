@@ -27,6 +27,10 @@ var CourseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    educatorName: {
+        type: String,
+        required: true,
+    },
     description: String,
     sections: [
         {
