@@ -75,13 +75,13 @@
                        <li class="list--list-item" data-age='{{this.age}}' style="border: none">
                             <a href="{{this.courseId}}" style="text-decoration: none;">
                                 <div class="course-1">
-                                    <img src="/img/rocketscience.png" class="course-pic">
+                                    <img src="{{this.coursePic}}" class="course-pic" alt="image missing">
                                     <div style="margin: 10px">
                                         <h3 class="courseId">{{this.courseId}}</h3>
-                                        <p class= "courseName">{{this.courseName}}</p>
-                                        <p class="agegroup">{{this.age}}</p>
-                                        <p class="subject">{{this.subject}}</p>
-                                        <p class="description">{{this.description}}</p>
+                                        <p class= "courseName"><span style="font-weight: bold">Course Name:</span> {{this.courseName}}</p>
+                                        <p class="agegroup"><span style="font-weight: bold">Age Group:</span> {{this.age}}</p>
+                                        <p class="subject"><span style="font-weight: bold; padding-bottom: 5px">Programs:</span> {{this.subject}}</p>
+                                        <!--<p class="description">{{this.description}}</p>-->
                                     </div>
                                 </div>
                             </a>

@@ -4,12 +4,15 @@
 }
 
 /*comment*/
+.comment_details ul li {
+    list-style-type: none;
+    float: left;
+    margin-right: 10px;
+}
+
 .comments {
     margin: 30px;
 }
-
-
-
 
 .comment-field {
     width: 80%;
@@ -25,6 +28,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-left: -70px;
 }
 
 .addComment {
@@ -32,6 +36,7 @@
     width: 50%;
     font-size: 10px;
     outline: 0;
+    margin-top: 10px;
 }
 
 .comment-btn {
@@ -43,6 +48,7 @@
     color: white;
     border: none;
     outline: none;
+    margin-top: 10px;
 }
 
 .create-comment {

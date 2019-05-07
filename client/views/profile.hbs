@@ -16,24 +16,27 @@
     <script type="text/javascript" src="/js/footer.js"></script>
 </head>
 <body>
-<div class="container target" style="display: flex; flex-direction: row; margin-top: 83px;">
+<div class="container target" style="display: flex; flex-direction: row; margin-top: 150px; margin-bottom: 150px">
     <div class="profile-left">
-        <div class="profile-title">
-
-            <div class="col-sm-4 "> 
-                <img title="profile image" class="img-circle img-responsive" src="http://www.rlsandbox.com/img/profile.jpg">
+        <div class="profile-title" style="padding-top: 30px">
+            <div class="col-sm-5" style="margin-left: 15%">
+                {{#if parent}}
+                    <img title="profile image" class="img-circle img-responsive" src="https://image.flaticon.com/icons/svg/1460/1460039.svg">
+                {{else if kid}}
+                    <img title="profile image" class="img-circle img-responsive" src="https://image.flaticon.com/icons/svg/163/163834.svg">
+                {{else}}
+                    <img title="profile image" class="img-circle img-responsive" src="https://image.flaticon.com/icons/svg/167/167752.svg">
+                {{/if}}
             </div>
         </div>
         <br>
-
-
         <div class="col-sm-9">
             <div class="profile-info">
                 <h3>Profile</h3>
-                <div class="list-group-item text-muted">{{username}}</div>
-                <div class="list-group-item text-muted">{{doc.role}}</div>
+                <div class="list-group-item text-muted" style="color: black"><span style="font-weight: bold">Username: </span>{{username}}</div>
+                <div class="list-group-item text-muted" style="color: black"><span style="font-weight: bold">Role: </span>{{doc.role}}</div>
                 {{#if kid}}
-                <div class="list-group-item text-muted">{{doc.parent}}</div>
+                <div class="list-group-item text-muted" style="color: black"><span style="font-weight: bold">Parent ID: </span>{{doc.parent}}</div>
                 {{/if}}
             </div>
 
@@ -45,20 +48,20 @@
             <div class="col-sm-9">
                 {{#each kids}}
                     <div class="panel panel-default">
-                        <div class="panel-heading">{{this.username}}</div>
+                        <div class="panel-heading"><span style="font-weight: bold">Your Kid: </span>{{this.username}}</div>
                         <div class="panel-body">
                             <div class="row">
                                 {{#each this.courses}}
-                                <div class="col-md-4">
-                                    <div class="thumbnail">
+                                <div class="col-md-6">
+                                    <div class="thumbnail" style="padding-left: 8%; padding-bottom: 5%">
                                         <h3>
                                             {{this.courseId}}
                                         </h3>
                                         <p>
                                             {{#if this.checked}} 
-                                                <div>Finished</div>
+                                                <div><span style="font-weight: bold">Status: </span>Finished</div>
                                             {{else}}
-                                                <div>Ongoing</div>
+                                                <div><span style="font-weight: bold">Status: </span>Ongoing</div>
                                             {{/if}}
                                         </p>
                                     </div>
@@ -74,15 +77,15 @@
                 <div class="panel-body">
                     <div class="row">
                         {{#each doc.courses}}
-                            <div class="col-md-4">
-                                <div class="thumbnail">
+                            <div class="col-md-6">
+                                <div class="thumbnail" style="padding-left: 8%; padding-bottom: 5%">
                                     <h3>
                                         {{this.courseId}}
                                     </h3>
                                     {{#if this.checked}} 
-                                        <div>Finished</div>
+                                        <div><span style="font-weight: bold">Status: </span>Finished</div>
                                     {{else}}
-                                        <div>Ongoing</div>
+                                        <div><span style="font-weight: bold">Status: </span>Ongoing</div>
                                     {{/if}}
                                     
                                 </div>
@@ -92,17 +95,17 @@
                 </div>
             </div>
         {{else}}
-            <div class="col-sm-9">
+            <div class="col-sm-10">
                 <div class="panel-body">
                     <div class="row">
                         {{#each courses}}
-                            <div class="col-md-4">
-                                <div class="thumbnail">
+                            <div class="col-md-6">
+                                <div class="thumbnail" style="padding-left: 8%; padding-bottom: 5%">
                                     <h3>
                                         {{this.courseId}}
                                     </h3>
-                                    <div>{{this.courseName}}</div>
-                                    <div>{{this.subject}}</div>
+                                    <div><span style="font-weight: bold">Course: </span>{{this.courseName}}</div>
+                                    <div><span style="font-weight: bold">Programs: </span>{{this.subject}}</div>
                                     </p>
                                 </div>
                             </div>
