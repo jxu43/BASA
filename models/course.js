@@ -11,6 +11,10 @@ var CourseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    coursePic: {
+        type: String,
+        required: true,
+    },
     subject: {
         type: String,
         required: true,
