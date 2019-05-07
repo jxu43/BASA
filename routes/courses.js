@@ -66,6 +66,7 @@ router.post('/create', hasAuth, (req, res) => {
                     subject: subject,
                     description: req.body.description,
                     educatorId: req.user.userId,
+                    educatorName: req.user.username,
                     coursePic: coursePic
                 });
                 newCourse
